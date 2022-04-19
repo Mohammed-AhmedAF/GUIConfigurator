@@ -166,19 +166,19 @@ paritySelectList =["UART_PARITY_DISABLED","UART_SELECT_ODD_PARITY","UART_SELECT_
 
 #Configuration widgets
 configFrame = LabelFrame(top,text="Configuration")
-moduleLabel = Label(configFrame,text="Module:")
+moduleLabel = Label(configFrame,text="Module")
 FIFOFrame = Frame(configFrame)
 highSpeedFrame = Frame(configFrame)
 interruptsFrame = Frame(configFrame)
 moduleCmbBox = ttk.Combobox(configFrame,values=moduleList,state="readonly",width=17)
 moduleCmbBox.current(0)
-clockSourceLabel = Label(configFrame,text="Clock source:")
+clockSourceLabel = Label(configFrame,text="Clock source")
 clockSourceCmbBox = ttk.Combobox(configFrame,values=clockSourceList,state="readonly",width=27)
 clockSourceCmbBox.current(0)
 baudrateCmbBox = ttk.Combobox(configFrame,values=baudrateList,state="readonly")
 baudrateCmbBox.current(0)
 baudrateLabel = Label(configFrame,text="Baudrate")
-systemClockLabel = Label(configFrame,text="System clock:")
+systemClockLabel = Label(configFrame,text="System clock")
 systemClockCmbBox = ttk.Combobox(configFrame,values=systemClockList,state="readonly")
 systemClockCmbBox.current(1)
 stopBitsLabel = Label(configFrame,text="Stop bits")
@@ -250,7 +250,7 @@ generateButton.grid(row=11,column=0,padx=5,pady=5,sticky=W+E+N+S)
 copyToClipboardButton.grid(row=11,column=1,padx=5,pady=5,sticky=W+E+N+S)
 generatedCodeText.pack()
 
-statusLabel.grid(row=1,column=0,sticky=E+W+N+S,padx=5,pady=5)
+statusLabel.grid(row=1,column=0,columnspan=2,sticky=E+W+N+S,padx=5,pady=5)
 
 def launchApp():
     top.mainloop()
