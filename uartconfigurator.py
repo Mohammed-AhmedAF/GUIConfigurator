@@ -5,6 +5,13 @@ from tkinter import *
 from tkinter import ttk
 import pyperclip as cb
 
+
+def saveConfiguration():
+    print("Saved")
+
+def loadConfiguration():
+    print("Load")
+
 def getChosenModule():
     module = moduleCmbBox.get()
     return module[-1]
@@ -149,6 +156,7 @@ top = Tk()
 top.title("UART Configurator")
 
 
+
 moduleList = ["UART_MODULE_0","UART_MODULE_1","UART_MODULE_2","UART_MODULE_3","UART_MODULE_4","UART_MODULE_5",
 "UART_MODULE_6","UART_MODULE_7"]
 clockSourceList = ["RC","PIOSC"]
@@ -165,6 +173,13 @@ txrxList = ["UART_RXTX_TX_ONLY","UART_RXTX_RX_ONLY","UART_RXTX_BOTH"]
 paritySelectList =["UART_PARITY_DISABLED","UART_SELECT_ODD_PARITY","UART_SELECT_EVEN_PARITY"]
 
 #Configuration widgets
+menubar = Menu(top)
+top.config(menu=menubar)
+fileMenu = Menu(menubar,tearoff=False)
+fileMenu.add_command(label="Load configuration",command=loadConfiguration)
+fileMenu.add_command(label="Save configuration",command=saveConfiguration)
+fileMenu.add_command(label="Exit",command=top.destroy)
+menubar.add_cascade(label="File",menu=fileMenu)
 configFrame = LabelFrame(top,text="Configuration")
 moduleLabel = Label(configFrame,text="Module")
 FIFOFrame = Frame(configFrame)
