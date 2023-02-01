@@ -4,6 +4,8 @@ from msilib.schema import CheckBox
 from tkinter import *
 from tkinter import ttk
 import pyperclip as cb
+import ttkbootstrap as ttkb
+from ttkbootstrap.constants import *
 
 
 def saveConfiguration():
@@ -152,10 +154,8 @@ def generateStruct():
     generatedCodeText.config(state=DISABLED)
 
 
-top = Tk()
+top = ttkb.Window(themename="solar")
 top.title("UART Configurator")
-
-
 
 moduleList = ["UART_MODULE_0","UART_MODULE_1","UART_MODULE_2","UART_MODULE_3","UART_MODULE_4","UART_MODULE_5",
 "UART_MODULE_6","UART_MODULE_7"]
@@ -175,12 +175,19 @@ paritySelectList =["UART_PARITY_DISABLED","UART_SELECT_ODD_PARITY","UART_SELECT_
 #Configuration widgets
 menubar = Menu(top)
 top.config(menu=menubar)
+notebook = ttk.Notebook(top)
+notebook.pack(expand=1,fill=BOTH)
+
 fileMenu = Menu(menubar,tearoff=False)
 fileMenu.add_command(label="Load configuration",command=loadConfiguration)
 fileMenu.add_command(label="Save configuration",command=saveConfiguration)
 fileMenu.add_command(label="Exit",command=top.destroy)
 menubar.add_cascade(label="File",menu=fileMenu)
-configFrame = LabelFrame(top,text="Configuration")
+uartFrame = Frame(notebook)
+gbioFrame = Frame(notebook)
+notebook.add(uartFrame,text="UART")
+notebook.add(gbioFrame,text="GPIO")
+configFrame = LabelFrame(uartFrame,text="Configuration")
 moduleLabel = Label(configFrame,text="Module")
 FIFOFrame = Frame(configFrame)
 highSpeedFrame = Frame(configFrame)
@@ -219,15 +226,15 @@ paritySelectCmbBox.current(0)
 txrxLabel = Label(configFrame,text="TxRx")
 txrxCmbBox = ttk.Combobox(configFrame,values=txrxList,state="readonly")
 txrxCmbBox.current(2)
-generateButton = Button(configFrame,text="Generate!",command=generateStruct)
-copyToClipboardButton = Button(configFrame,text="Copy to clipboard",command=copyToClipboard)
+generateButton = ttkb.Button(configFrame,text="Generate!",command=generateStruct,bootstyle=(PRIMARY, OUTLINE))
+copyToClipboardButton = ttkb.Button(configFrame,text="Copy to clipboard",command=copyToClipboard,bootstyle=(SECONDARY,OUTLINE))
 
 #Generated code widgets
-generatedCodeFrame = LabelFrame(top,text="Code")
+generatedCodeFrame = LabelFrame(uartFrame,text="Code")
 generatedCodeText = Text(generatedCodeFrame,height=30,width=120)
 
 #Statusbar
-statusLabel = Label(top,relief=SUNKEN)
+statusLabel = Label(uartFrame,relief=SUNKEN)
 
 #Grid
 configFrame.grid(row=0,column=0,padx=5,pady=5,sticky=W+E+N+S)
