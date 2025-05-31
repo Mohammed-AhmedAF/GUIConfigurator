@@ -1,6 +1,5 @@
 from cProfile import label
 from cgitb import text
-from msilib.schema import CheckBox
 from tkinter import *
 from tkinter import ttk
 import pyperclip as cb
