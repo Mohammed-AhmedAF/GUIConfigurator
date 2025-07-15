@@ -1,5 +1,5 @@
 from cProfile import label
-from cgitb import text
+#from msilib.schema import CheckBox
 from tkinter import *
 from tkinter import ttk
 import pyperclip as cb
@@ -73,7 +73,7 @@ def getCalculatedBdrParam(param):
     else:
         return str(fprd)
 
-def getInterrupts():
+def getInterrupts() -> str:
     result = receiveVar.get()
     interrupts = str()
     interrupts = "NO_INTERRUPTS"
@@ -170,11 +170,15 @@ transmitVar = IntVar()
 parityErrorVar = IntVar()
 txrxList = ["UART_RXTX_TX_ONLY","UART_RXTX_RX_ONLY","UART_RXTX_BOTH"]
 paritySelectList =["UART_PARITY_DISABLED","UART_SELECT_ODD_PARITY","UART_SELECT_EVEN_PARITY"]
+portList = ["Port A","Port B","Port C","Port D","Port E","Port F"]
+pinList = ["Pin 0","Pin 1","Pin 2","Pin 3","Pin 4","Pin 4","Pin 5","Pin 6","Pin 7"]
 
 #Configuration widgets
 menubar = Menu(top)
 top.config(menu=menubar)
-notebook = ttk.Notebook(top)
+peripheralsFrame = Frame(top)
+rightSideFrame = Frame(top)
+notebook = ttk.Notebook(peripheralsFrame)
 notebook.pack(expand=1,fill=BOTH)
 
 fileMenu = Menu(menubar,tearoff=False)
@@ -183,9 +187,9 @@ fileMenu.add_command(label="Save configuration",command=saveConfiguration)
 fileMenu.add_command(label="Exit",command=top.destroy)
 menubar.add_cascade(label="File",menu=fileMenu)
 uartFrame = Frame(notebook)
-gbioFrame = Frame(notebook)
+gpioFrame = Frame(notebook)
 notebook.add(uartFrame,text="UART")
-notebook.add(gbioFrame,text="GPIO")
+notebook.add(gpioFrame,text="GPIO")
 configFrame = LabelFrame(uartFrame,text="Configuration")
 moduleLabel = Label(configFrame,text="Module")
 FIFOFrame = Frame(configFrame)
@@ -225,17 +229,28 @@ paritySelectCmbBox.current(0)
 txrxLabel = Label(configFrame,text="TxRx")
 txrxCmbBox = ttk.Combobox(configFrame,values=txrxList,state="readonly")
 txrxCmbBox.current(2)
+
+#GPIO tab
+portLabel = Label(gpioFrame,text="Port")
+portCmbBox = ttk.Combobox(gpioFrame,values=portList,state="readonly")
+portCmbBox.current(0)
+pinLabel = Label(gpioFrame,text="Pin")
+pinCmbBox = ttk.Combobox(gpioFrame,values=pinList,state="readonly")
+pinCmbBox.current(0)
+
 generateButton = ttkb.Button(configFrame,text="Generate!",command=generateStruct,bootstyle=(PRIMARY, OUTLINE))
 copyToClipboardButton = ttkb.Button(configFrame,text="Copy to clipboard",command=copyToClipboard,bootstyle=(SECONDARY,OUTLINE))
 
 #Generated code widgets
-generatedCodeFrame = LabelFrame(uartFrame,text="Code")
+generatedCodeFrame = LabelFrame(rightSideFrame,text="Code")
 generatedCodeText = Text(generatedCodeFrame,height=30,width=120)
 
 #Statusbar
 statusLabel = Label(uartFrame,relief=SUNKEN)
 
 #Grid
+peripheralsFrame.pack(side=LEFT,padx=10,expand=True)
+rightSideFrame.pack(side=RIGHT,padx=10,expand=True)
 configFrame.grid(row=0,column=0,padx=5,pady=5,sticky=W+E+N+S)
 generatedCodeFrame.grid(row=0,column=1,padx=5,pady=5,sticky=W+E+N+S)
 moduleLabel.grid(row=0,column=0,padx=5,pady=5,sticky=W+E+N+S)
@@ -270,6 +285,11 @@ paritySelectCmbBox.grid(row=10,column=1,padx=5,pady=5,sticky=W+E+N+S)
 generateButton.grid(row=11,column=0,padx=5,pady=5,sticky=W+E+N+S)
 copyToClipboardButton.grid(row=11,column=1,padx=5,pady=5,sticky=W+E+N+S)
 generatedCodeText.pack()
+#GPIO widgets
+portLabel.grid(row=0,column=0,padx=5,pady=5,sticky=W+E+N+S)
+portCmbBox.grid(row=0,column=1,padx=5,pady=5,sticky=W+E+N+S)
+pinLabel.grid(row=1,column=0,padx=5,pady=5,sticky=W+E+N+S)
+pinCmbBox.grid(row=1,column=1,padx=5,pady=5,sticky=W+E+N+S)
 
 statusLabel.grid(row=1,column=0,columnspan=2,sticky=E+W+N+S,padx=5,pady=5)
 
